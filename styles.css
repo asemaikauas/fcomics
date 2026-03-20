@@ -268,16 +268,56 @@ button {
    ======================= */
 .hero-section {
   position: relative;
-  padding: 140px 0 80px;
+  min-height: calc(100vh - 72px); 
+  display: flex;
+  align-items: flex-end; 
+  justify-content: center;
   overflow: hidden;
-  background: linear-gradient(170deg, var(--violet-50) 0%, var(--bg) 50%, var(--bg-soft) 100%);
+  margin-top: 72px; 
+}
+.video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.hero-video-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-section .hero-title {
+  color: #ffffff;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin-bottom: 40px;
+}
+
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3); 
+}
+
+.videobuttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  opacity: 1; 
+}
+
+.hero-section .btn-ghost {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1.5px solid #ffffff;
+  backdrop-filter: blur(5px);
 }
 
 .hero-bg-shapes {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
+  display: none;
 }
 
 .shape {
@@ -333,6 +373,9 @@ button {
 
 .hero-content {
   position: relative;
+  z-index: 2;
+  width: 100%;
+  padding-bottom: 60px; 
   text-align: center;
 }
 
@@ -389,14 +432,7 @@ button {
   box-shadow: var(--shadow-lg);
 }
 
-.hero-video iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  border-radius: var(--radius);
-}
+
 
 .cta-row {
   display: flex;
@@ -440,9 +476,9 @@ button {
   border: 1.5px solid var(--violet-300);
 }
 
-.btn-ghost:hover {
-  background: var(--violet-50);
-  border-color: var(--violet);
+.hero-section .btn-ghost:hover {
+  background: #ffffff;
+  color: var(--violet);
 }
 
 .btn-lg {
@@ -994,15 +1030,12 @@ button {
 
 /* Viewer grid */
 .comic-viewer {
-  position: relative;
-  display: grid;
-  grid-template-columns: var(--nav-size) 1fr var(--nav-size);
-  align-items: center;
-  justify-items: center;
-  gap: 14px;
-  margin-top: 8px;
+    display: grid;
+    grid-template-columns: 5% 90% 5%; 
+    align-items: start;
+    gap: 10px;
+    max-width: 100vw;
 }
-
 .nav-btn.prev {
   grid-column: 1;
 }

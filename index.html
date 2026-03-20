@@ -34,36 +34,26 @@
 
   <main>
     <!-- Hero -->
-    <section id="home" class="hero-section">
-      <div class="hero-bg-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
+  <section id="home" class="hero-section">
+    <div class="video-container">
+      <video autoplay muted loop playsinline class="hero-video-bg">
+        <source src="https://res.cloudinary.com/dk59ei1bg/video/upload/v1774011983/VID-20260319-WA0021_mtzyik.mp4" type="video/mp4">
+      </video>
+      <div class="video-overlay"></div>
+    </div>
+
+    <div class="container hero-content">
+      <div class="videobuttons" data-delay="300">
+        <a class="btn btn-primary" href="comic.html">
+          <span>Explore</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+        <a class="btn btn-ghost" href="#about">Learn More</a>
       </div>
-      <div class="container hero-content">
-        <h1 class="hero-title reveal" data-delay="100">
-          <span class="line">The Pigeon</span>
-          <span class="line accent-line">Who Tried</span>
-        </h1>
-        <div class="hero-video reveal" data-delay="200">
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/UDmkkxY_raI?si=Hy5hyLVcCTPx2dcn"
-            title="YouTube video player" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div class="cta-row reveal" data-delay="300">
-          <a class="btn btn-primary" href="comic.html">
-            <span>Start Reading</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
-          </a>
-          <a class="btn btn-ghost" href="#about">Learn More</a>
-        </div>
-      </div>
-    </section>
+    </div>
+  </section>
 
     <!-- About -->
     <section id="about" class="section about-section">
