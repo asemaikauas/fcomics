@@ -14,6 +14,8 @@
   const preloadBar = document.getElementById('preloadBar');
   const comicViewer = document.getElementById('comicViewer');
   const kbdHint = document.getElementById('kbdHint');
+  let branchAdded = false; 
+  let mainStoryLength = 3; 
 
   let currentBranch = 'main';
 
@@ -49,13 +51,17 @@
     a.volume = 0.85;
   });
 
-  const AUDIO_CUES = [
-    { pattern: /scene4\/8\.png$/i,  audio: specialAudio.revenge },
-    { pattern: /scene4\/9\.png$/i,  audio: specialAudio.flyingPigeon },
-    { pattern: /scene4\/12\.png$/i, audio: specialAudio.warContinues },
-    { pattern: /scene5\/3\.png$/i,  audio: specialAudio.idea },
-    { pattern: /scene5\/7\.png$/i,  audio: specialAudio.wow },
-    { pattern: /scene5\/8\.png$/i,  audio: specialAudio.happyPigeons },
+const AUDIO_CUES = [
+    // Scene 2: Pigeon getting "shooed"
+    { pattern: /scene2\/1\.png$/i,  audio: specialAudio.flyingPigeon },
+    
+    // Revenge Branch (Scene 4)
+    { pattern: /scene4\/1\.png$/i,  audio: specialAudio.revenge },
+    { pattern: /scene4\/2\.png$/i,  audio: specialAudio.warContinues },
+    
+    // Friends Branch (Scene 5)
+    { pattern: /scene5\/1\.png$/i,  audio: specialAudio.idea },
+    { pattern: /scene5\/2\.png$/i,  audio: specialAudio.happyPigeons }
   ];
 
   function maybePlaySpecialAudio() {
@@ -73,54 +79,19 @@
 
   // --- Image data ---
   let images = [
-    // { src: 'scene1/1part.png', scene: 1 },
-    // { src: 'scene1/2part.png', scene: 1 },
-    // { src: 'scene1/3part.png', scene: 1 },
-    // { src: 'scene1/4part.png', scene: 1 },
-    { src: 'scene1/5part.png', scene: 1 },
-    // { src: 'scene2/1.PNG', scene: 2 },
-    // { src: 'scene2/2.PNG', scene: 2 },
-    // { src: 'scene2/3.PNG', scene: 2 },
-    { src: 'scene2/4.PNG', scene: 2 },
-    // { src: 'scene3/1.PNG', scene: 3 },
-    // { src: 'scene3/2.PNG', scene: 3 },
-    // { src: 'scene3/3.PNG', scene: 3 },
-    // { src: 'scene3/4.PNG', scene: 3 },
-    // { src: 'scene3/5.PNG', scene: 3 },
-    // { src: 'scene3/6.PNG', scene: 3 },
-    // { src: 'scene3/7.PNG', scene: 3 },
-    // { src: 'scene3/8.PNG', scene: 3 },
-    // { src: 'scene3/9.PNG', scene: 3 },
-    { src: 'scene3/10.PNG', scene: 3 },
+    { src: 'scene1/1.png', scene: 1 },
+    { src: 'scene2/1.png', scene: 2 },
+    { src: 'scene3/1.png', scene: 3 },
   ];
 
   const REVENGE_SCENES = [
-    // { src: 'scene4/1.PNG', scene: 4 },
-    // { src: 'scene4/2.PNG', scene: 4 },
-    // { src: 'scene4/3.PNG', scene: 4 },
-    // { src: 'scene4/4.PNG', scene: 4 },
-    // { src: 'scene4/5.PNG', scene: 4 },
-    // { src: 'scene4/6.PNG', scene: 4 },
-    // { src: 'scene4/7.PNG', scene: 4 },
-    // { src: 'scene4/8.PNG', scene: 4 },
-    // { src: 'scene4/9.PNG', scene: 4 },
-    { src: 'scene4/10.PNG', scene: 4 },
-    // { src: 'scene4/11.PNG', scene: 5 },
-    // { src: 'scene4/12.PNG', scene: 5 },
-    { src: 'scene4/13.PNG', scene: 5 },
+    { src: 'scene4/1.png', scene: 4 },
+    { src: 'scene4/2.png', scene: 5 },
   ];
 
   const FRIENDS_SCENES = [
-    // { src: 'scene5/1.PNG', scene: 5 },
-    // { src: 'scene5/2.PNG', scene: 5 },
-    // { src: 'scene5/3.PNG', scene: 5 },
-    // { src: 'scene5/4.PNG', scene: 5 },
-    // { src: 'scene5/5.PNG', scene: 5 },
-    // { src: 'scene5/6.PNG', scene: 5 },
-    { src: 'scene5/7.PNG', scene: 5 },
-    // { src: 'scene5/8.PNG', scene: 6 },
-    // { src: 'scene5/9.PNG', scene: 6 },
-    { src: 'scene5/10.PNG', scene: 6 },
+    { src: 'scene5/1.png', scene: 5 },
+    { src: 'scene5/2.png', scene: 6 },
   ];
 
   // --- Preloading ---
@@ -186,56 +157,68 @@
   // --- Decision UI ---
   let decisionRow = null;
 
-  function ensureDecisionUI() {
+function ensureDecisionUI() {
     if (decisionRow) return decisionRow;
     decisionRow = document.createElement('div');
     decisionRow.className = 'decision-row';
-    decisionRow.setAttribute('role', 'group');
-    decisionRow.setAttribute('aria-label', 'Choose ending');
 
     const revengeBtn = document.createElement('button');
     revengeBtn.className = 'decision-btn revenge';
-    revengeBtn.type = 'button';
     revengeBtn.textContent = 'Take Revenge';
-    revengeBtn.addEventListener('click', () => startBranch('revenge'));
+    revengeBtn.onclick = () => startBranch('revenge');
 
     const friendsBtn = document.createElement('button');
     friendsBtn.className = 'decision-btn friends';
-    friendsBtn.type = 'button';
     friendsBtn.textContent = 'Make Friends';
-    friendsBtn.addEventListener('click', () => startBranch('friends'));
+    friendsBtn.onclick = () => startBranch('friends');
 
-    decisionRow.appendChild(revengeBtn);
-    decisionRow.appendChild(friendsBtn);
+    const resetBtn = document.createElement('button');
+    resetBtn.className = 'decision-btn reset';
+    resetBtn.textContent = 'Start Over';
+    resetBtn.style.display = 'none'; 
+    resetBtn.onclick = () => restartStory();
+
+    decisionRow.append(revengeBtn, friendsBtn, resetBtn);
     if (viewer) viewer.appendChild(decisionRow);
     return decisionRow;
-  }
+}
 
-  function updateDecisionOverlay() {
-    const shouldShow = images[index] && /scene3\/10\.PNG$/i.test(images[index].src);
+
+function updateDecisionOverlay() {
+    const isAtCouncil = (index === mainStoryLength - 1);
+    const isAtTheEnd = (index === images.length - 1 && branchAdded);
+    
     const el = ensureDecisionUI();
-    el.style.display = shouldShow ? 'flex' : 'none';
-    if (nextBtn) nextBtn.hidden = !!shouldShow;
+    const revBtn = el.querySelector('.revenge');
+    const friBtn = el.querySelector('.friends');
+    const resBtn = el.querySelector('.reset');
 
-    if (shouldShow) {
-      if (REVENGE_SCENES.length && !branchPreload.revenge) {
-        branchPreload.revenge = preloadImages(REVENGE_SCENES);
-      }
-      if (FRIENDS_SCENES.length && !branchPreload.friends) {
-        branchPreload.friends = preloadImages(FRIENDS_SCENES);
-      }
-      if (!branchPrewarmDone.revenge && branchPreload.revenge) {
-        predecodeFirstN(branchPreload.revenge, 3);
-        branchPrewarmDone.revenge = true;
-      }
-      if (!branchPrewarmDone.friends && branchPreload.friends) {
-        predecodeFirstN(branchPreload.friends, 3);
-        branchPrewarmDone.friends = true;
+    el.style.display = (isAtCouncil || isAtTheEnd) ? 'flex' : 'none';
+
+    if (isAtCouncil) {
+      revBtn.style.display = 'block';
+      friBtn.style.display = 'block';
+      resBtn.style.display = 'none';
+      if (nextBtn) nextBtn.style.visibility = 'hidden';
+    } else if (isAtTheEnd) {
+
+      revBtn.style.display = 'none';
+      friBtn.style.display = 'none';
+      resBtn.style.display = 'block';
+      if (nextBtn) nextBtn.style.visibility = 'hidden';
+    } else {
+
+      if (nextBtn) {
+        nextBtn.style.visibility = 'visible';
+        nextBtn.disabled = false;
       }
     }
-  }
+    
+    if (prevBtn) prevBtn.hidden = (index === 0);
+}
 
-  function updateNavState() {
+
+function updateNavState() {
     if (prevBtn) prevBtn.hidden = index === 0;
     if (nextBtn) nextBtn.disabled = index === images.length - 1;
   }
@@ -246,10 +229,6 @@
     });
   }
 
-  // --- Crossfade rendering ---
-  // New image fades in ON TOP of the old (which stays fully opaque).
-  // Once the new image is fully visible, the old one is removed.
-  // This prevents any white flash since there's always a fully opaque image visible.
 
   function crossfade(newImg, duration) {
     return new Promise((resolve) => {
@@ -355,45 +334,30 @@
   }
 
   // --- Navigation ---
-  function go(delta) {
-    if (isAnimating) {
-      queuedDelta += delta;
-      return;
-    }
+function go(delta) {
+    if (isAnimating) return;
 
-    const max = images.length - 1;
-    const next = Math.min(max, Math.max(0, index + delta));
-    if (next === index) return;
+    if (delta > 0 && index === images.length - 1 && branchAdded) return;
 
-    const now = performance.now();
-    const fastTap = (now - lastNavTs) < 220;
-    lastNavTs = now;
-
-    const isSceneChange = images[index].scene !== images[next].scene;
-
-    if (fastTap) {
-      performFastNavigation(next);
-      return;
-    }
+    const next = index + delta;
+    if (next < 0 || next >= images.length) return;
 
     isAnimating = true;
+    const isSceneChange = images[index].scene !== images[next].scene;
 
     if (isSceneChange) {
       flipTransition(next, delta).finally(() => {
         isAnimating = false;
-        prewarmNeighbors();
-        drainQueued();
+        updateDecisionOverlay();
       });
     } else {
       index = next;
       render().finally(() => {
         isAnimating = false;
-        prewarmNeighbors();
-        drainQueued();
+        updateDecisionOverlay();
       });
     }
   }
-
   function performFastNavigation(nextIndex) {
     isAnimating = true;
     album.classList.remove('flip-forward', 'flip-back');
@@ -434,36 +398,59 @@
     performFastNavigation(next);
   }
 
-  function startBranch(which) {
+function restartStory() {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    branchAdded = false;
+    images.length = mainStoryLength;
+    cache.length = mainStoryLength;
+
+    playFlipSound();
+    album.classList.add('flip-back');
+
+    setTimeout(() => {
+      index = 0;
+      render({ skipFade: true }).finally(() => {
+        album.classList.remove('flip-back');
+        isAnimating = false;
+        updateNavState();
+        updateDecisionOverlay();
+      });
+    }, 250);
+}
+
+function startBranch(which) {
     const list = which === 'revenge' ? REVENGE_SCENES : FRIENDS_SCENES;
-    if (!list || list.length === 0) return;
+    const branchCache = branchPreload[which];
 
-    currentBranch = which;
+    if (!list || !branchCache) return;
 
-    let branchCache = branchPreload[which];
-    if (!branchCache || branchCache.length !== list.length) {
-      branchCache = preloadImages(list);
-      branchPreload[which] = branchCache;
+    if (branchAdded) {
+      images.length = mainStoryLength; 
+      cache.length = mainStoryLength;
     }
+
+    images.push(...list);
+    cache.push(...branchCache);
+    branchAdded = true;
 
     isAnimating = true;
 
-    Promise.all(branchCache.map(decodeImage)).then(() => {
-      const currentImg = album.querySelector('img');
-      if (currentImg) currentImg.style.opacity = '0';
+    const nextIndex = mainStoryLength; 
+    
+    decodeImage(cache[nextIndex]).then(() => {
       playFlipSound();
+      album.classList.add('flip-forward');
+
       setTimeout(() => {
-        if (currentImg && currentImg.parentNode) currentImg.remove();
-        images = list.slice();
-        cache = branchCache;
-        index = 0;
-        render({ isFirstRender: true }).finally(() => {
+        index = nextIndex;
+        render({ skipFade: true }).finally(() => {
+          album.classList.remove('flip-forward');
           isAnimating = false;
-          prewarmNeighbors();
           updateNavState();
-          updateDecisionOverlay();
         });
-      }, 200);
+      }, 250);
     });
   }
 
