@@ -8,7 +8,9 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet" />
   <link rel="preload" as="image" href="scene1/1.png" fetchpriority="high">
   <link rel="preload" as="image" href="scene2/1.png">
   <link rel="preload" as="image" href="scene3/1.png">
@@ -40,11 +42,6 @@
   <main class="comic-page-wrapper">
     <section class="section" style="padding-top: 24px;">
       <div class="container">
-        <a href="index.html" class="back-link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-          Back to Home
-        </a>
-
         <!-- Loading overlay -->
         <div class="preload-overlay" id="preloadOverlay">
           <div class="preload-spinner"></div>
@@ -55,18 +52,15 @@
         </div>
 
         <!-- Comic viewer -->
-       <div class="comic-viewer" id="comicViewer" style="display:none">
+        <div class="comic-viewer" id="comicViewer" style="display:none">
           <button class="nav-btn prev" hidden title="Previous">‹</button>
-          
+
           <div class="album">
-              </div>
-          
+          </div>
+
           <button class="nav-btn next" title="Next">›</button>
         </div>
 
-        <div class="kbd-hint" id="kbdHint" style="display:none">
-          Use <span class="kbd">←</span> <span class="kbd">→</span> arrow keys to navigate
-        </div>
       </div>
     </section>
   </main>
