@@ -13,7 +13,6 @@
   const preloadOverlay = document.getElementById('preloadOverlay');
   const preloadBar = document.getElementById('preloadBar');
   const comicViewer = document.getElementById('comicViewer');
-  const kbdHint = document.getElementById('kbdHint');
   let branchAdded = false; 
   let mainStoryLength = 3; 
 
@@ -509,7 +508,6 @@ function startBranch(which) {
 
     if (preloadOverlay) preloadOverlay.classList.add('done');
     if (comicViewer) comicViewer.style.display = '';
-    if (kbdHint) kbdHint.style.display = '';
 
     setTimeout(() => {
       if (preloadOverlay) preloadOverlay.style.display = 'none';
